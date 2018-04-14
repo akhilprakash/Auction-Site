@@ -1,0 +1,22 @@
+{% extends "auction/loggedInWithItems.html" %}
+
+{% block title %}Send Email{% endblock %}
+{% block css %}
+	{% load static %}
+	<link href="{% static 'auction/css/shop-homepage.css' %}" rel="stylesheet">
+	<link href="{% static 'auction/css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content-high %}
+<form action="" method="post">
+    <div class="container">
+        <h1>Contact Seller</h1>
+        {{form}}
+        {% csrf_token %}
+        <br>
+        <input type="submit" class="btn btn-primary btn-sg" value="Send Email"/>
+    </div>
+
+</form>
+
+{% endblock %}

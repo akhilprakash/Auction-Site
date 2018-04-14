@@ -1,0 +1,55 @@
+{% extends "auction/notLoggedInNavbar.html" %}
+
+{% block title %}Login Page{% endblock %}
+
+{% block css %}
+    {% load static %}
+    <link href="{% static 'auction/css/shop-homepage.css' %}" rel="stylesheet">
+    <link href="{% static 'auction/css/login.css' %}" rel="stylesheet">
+    <link href="{% static 'auction/css/boxes.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content-high %}
+<div class="container">    
+    <div id="loginbox" class="mainbox col-md-6 col-md-offset-3 col-sm-8 col-sm-offset-2"> 
+        <div class="panel panel-info" >                   
+            <div class="panel-heading">
+                <div class="panel-title">Sign In</div>
+                <span id="log">
+                    <div id="login"><a href="{% url 'forgotPassword' %}" id="text">Forgot password?</a></div>
+                    <br>
+                    <div id="login"><a href="{% url 'forgotUsername' %}" id="text">Forgot username?</a></div>
+                </span>
+            </div>     
+
+            <div id="newPassword" class="panel-body" >
+
+                <div id="login-alert" class="alert alert-danger col-sm-12"></div>
+
+                <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
+
+                    <table>
+                        {{form}}
+                    </table>
+
+                    <br>
+
+                
+                            <button type = "submit" class="btn btn-primary btn-sg">Sign In</button>
+
+                            <div>
+                                Don't have an account! 
+                                <a href="{% url 'register' %}" onClick="$('#loginbox').hide(); $('#signupbox').show()">
+                                    Sign Up Here
+                                </a>
+                            </div>
+                    {% csrf_token %}
+
+                </form>     
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

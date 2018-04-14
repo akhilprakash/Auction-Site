@@ -1,0 +1,100 @@
+{% extends "auction/loggedInWithItems.html" %}
+
+{% block title %}Search Results{% endblock %}
+{% block css %}
+  {% load static %}
+  <link href="{% static 'auction/css/shop-homepage.css' %}" rel="stylesheet">
+  <link href="{% static 'auction/css/profile.css' %}" rel="stylesheet">
+{% endblock %}
+
+{% block content-high %}
+
+
+<br>
+<div class="container">
+
+  <section>
+    <form action="{% url 'home' %}" method="post">
+
+      <div class="col-md-6">
+        <div id="custom-search-input">
+          <div class="input-group col-md-12 col-md-offset-6">
+            {{form.search}}
+            <input type="submit" id="searchBar" value="Search" class="btn btn-primary btn-sg"/>
+            {% csrf_token %}
+          </div>
+        </div>
+      </div>
+    </form>
+  </section>
+  
+</div>
+
+<div>
+{% if not items %}
+  <p class="message"> 
+  No items with the keywords found 
+</p>
+{% endif %}
+</div>
+{% if otherItems %}
+{% load mathfilters %}
+{% load humanize %}
+
+<section class="catalog-grid">
+  <div class="container">
+    <h2>Other Items: </h2>
+                            
+    <div class="row">
+
+        {% for item in otherItems %}
+            <div class="col-lg-3 col-md-4 col-sm-6">
+                <div class="tile">
+                  {% if item.price %}
+                    <div class="price-label">Buy Now for ${{item.price|floatformat:2|intcomma}}</div>
+                  {% else %} 
+                    <div class="price-label">Biddable!</div>
+                  {% endif %}
+
+                    <img src="{{item.picture_url}}" alt="1"/>
+                    <span class="tile-overlay"></span>
+
+   
+                  <div class="footer">
+                    <a href=" {% url 'productInfo' item.id %}">{{item.title}}</a>
+
+                    {% if item.endBidDate %} 
+                      <p> Bid Ends at {{item.endBidDate}}</p> 
+                    {% else %}
+                      <p> Buy It Now Item Only!</p> 
+                    {% endif %}
+                    <span>by {{item.seller}}</span>
+
+                  </div>
+
+  <!-- Ratings -->
+
+                  <div class="ratings">
+                    <p class="pull-right">{{item.numReviews}} reviews </p>
+                    <p class="stars">
+                      {% with numerator=item.sumStars denominator=item.numStarRequests %}
+                      {% if denominator != 0 %}
+                        <span style="white-space: pre;"> </span>
+                      {% for i in numerator|intdiv:denominator|get_range %}
+                        <span class="glyphicon glyphicon-star"></span>
+                      {% endfor %}
+                      {% endif %}
+                      {% endwith %}
+                    </p>
+                  </div>
+
+                </div>
+              </div>
+
+        {% endfor %}
+    </div>
+  </div>
+</section>
+</div>
+{% endif %}
+{% endblock %}
